@@ -11,8 +11,8 @@
   display: flex;
 }
 .admin__leftmenu {
-  max-width: 23%;
-  min-width: 23%;
+  max-width: 21%;
+  min-width: 21%;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -24,12 +24,13 @@
   border-bottom: 2px solid #F4F7FE;
 }
 .admin__leftmenu__logo img {
-  width: 15vw;
-  height: 10vh;
+  width: 13vw;
+  height: 8vh;
 }
 .admin__leftmenu__navlist {
   list-style: none;
   text-align: justify;
+  padding-left: 1rem;
 }
 .admin__leftmenu__navlist li {
   padding: 0.5rem 0;
@@ -50,9 +51,11 @@
   color: #310053;
 }
 .admin__right {
-  min-width: 77%;
+  min-width: 79%;
   background-color: #F4F7FE;
   padding: 1rem 0.5rem;
+  max-height: 100vh;
+  overflow: overlay;
 }
 .admin__right__header {
   display: flex;
@@ -71,7 +74,7 @@
   background-color: white;
   padding: 0.25rem 0.75rem;
   border-radius: 2rem;
-  box-shadow: 3px 6px 5px 1px rgba(0, 0, 0, 0.1215686275);
+  box-shadow: 3px 6px 13px 5px rgba(112, 144, 176, 0.1215686275);
 }
 .admin__right__header__profile div:nth-child(1) {
   font-size: 1rem;
@@ -86,10 +89,49 @@
 .admin__right__content__uploadsyllabus {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 }
 .admin__right__content__uploadsyllabus__inputfield {
   display: flex;
 }
 .admin__right__content__uploadsyllabus__inputfield label {
-  width: 10%;
+  width: 15%;
+}
+.admin__right__content__uploadsyllabus__inputfield__data {
+  background: white;
+  padding: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.admin__right__content__uploadsyllabus__inputfield__data li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+}
+.admin__right__content__uploadsyllabus__inputfield__data li div:nth-child(1) {
+  font-size: 0.85rem;
+}
+.admin__right__content__uploadsyllabus__inputfield__data li div:nth-child(2) {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.admin__right__content__uploadsyllabus__inputfield__data li div:nth-child(3) {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.admin__right__content__uploadsyllabus__inputfield__data-input {
+  display: flex;
+  gap: 1rem;
+}
+.admin__right__content__uploadsyllabus__inputfield__data-input button {
+  background-color: #C3C3C3;
+  color: black;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
 }/*# sourceMappingURL=admin.css.map */
