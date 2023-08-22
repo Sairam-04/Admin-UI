@@ -49,7 +49,7 @@ const AdminComponent = () => {
                 <article className="admin__right">
                     <article className="admin__right__header">
                         <div className="admin__right__header__title">
-                           {getTitle()}
+                            {getTitle()}
                         </div>
                         <div className="admin__right__header__profile">
                             <div>
@@ -62,7 +62,9 @@ const AdminComponent = () => {
                     </article>
 
                     <article className="admin__right__content">
-                        <Outlet />
+                        <form action="">
+                            <Outlet />
+                        </form>
                     </article>
                 </article>
             </section>
