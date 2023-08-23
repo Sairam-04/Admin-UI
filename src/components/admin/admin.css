@@ -86,6 +86,21 @@
 .admin__right__content {
   padding: 1rem 1.25rem;
 }
+.admin__right__content form .formcontainer-submitbtn {
+  position: relative;
+  left: 88%;
+  padding: 0.5rem 2rem;
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+.admin__right__content form .formcontainer-submitbtn:hover {
+  background-color: #3f3f3f;
+}
 .admin__right__content__uploadsyllabus {
   display: flex;
   flex-direction: column;
@@ -99,7 +114,7 @@
   cursor: pointer;
   color: #2B3674;
   font-weight: 500;
-  max-height: 5vh;
+  max-height: 4vh;
 }
 .admin__right__content__uploadsyllabus__inputfield label {
   width: 15%;
@@ -177,9 +192,6 @@
   font-size: 0.5rem;
   line-height: 1.5;
 }
-.admin__right__content__tab-switcher .basicconfigurationblock {
-  padding-top: 0.5rem;
-}
 .admin__right__content__tab-switcher .options .option {
   display: flex;
   align-items: center;
@@ -249,23 +261,6 @@
   margin-left: 0.25rem;
   /* Add space between checkbox and text */
 }
-.admin__right__content__contentconfiguration__submit-button {
-  margin-top: -3rem;
-  display: flex;
-  justify-content: flex-end;
-}
-.admin__right__content__contentconfiguration__submit-button button {
-  padding: 0.5rem 2rem;
-  background-color: #000000;
-  color: white;
-  border: none;
-  border-radius: 2rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-.admin__right__content__contentconfiguration__submit-button button:hover {
-  background-color: #3f3f3f;
-}
 .admin__right__content__contentupload {
   display: flex;
   flex-direction: column;
@@ -276,6 +271,7 @@
   grid-template-columns: auto auto;
   gap: 1.5rem;
   background-color: #F4F7FE;
+  padding: 1rem 0;
 }
 .admin__right__content__contentupload__upload-container {
   min-width: 22vw;
@@ -306,11 +302,11 @@
   justify-content: space-evenly;
 }
 .admin__right__content__contentupload__upload__box .img {
-  width: 3rem;
-  height: 3rem;
+  width: 3vw;
+  height: 6.5vh;
 }
 .admin__right__content__contentupload__upload__heading {
-  font-weight: 400;
+  font-weight: 500;
   font-size: 0.9rem;
 }
 .admin__right__content__contentupload__upload__desc {

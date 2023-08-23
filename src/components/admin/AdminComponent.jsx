@@ -32,8 +32,8 @@ const AdminComponent = () => {
                         <img src={branelogo} alt="Brane Logo" />
                     </article>
                     <ul className="admin__leftmenu__navlist">
-                        <li><Link to="/">HomePage</Link></li>
-                        <li><Link to="/">LandingPage</Link></li>
+                        <li><Link to="/homepage">HomePage</Link></li>
+                        <li><Link to="/landingpage">LandingPage</Link></li>
                         <li><Link to="/basic-configuration">Basic Configuration</Link></li>
                         <li><Link to="/upload-syllabus">Upload Syllabus</Link></li>
                         <li><Link to="/content-configuration">Content Configuration</Link></li>
@@ -63,7 +63,11 @@ const AdminComponent = () => {
 
                     <article className="admin__right__content">
                         <form action="">
-                            <Outlet />
+                            <div className="formcontainer">
+                                <Outlet />
+                                <button className="formcontainer-submitbtn"> Submit </button>
+                            </div>
+
                         </form>
                     </article>
                 </article>
