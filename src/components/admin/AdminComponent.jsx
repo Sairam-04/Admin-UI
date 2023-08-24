@@ -3,6 +3,8 @@ import './admin.css'
 import branelogo from "../../assets/logo.png"
 import Avatarimg from "../../assets/Avatar.png"
 import { Link, Outlet, useLocation } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from 'react-query'
+const queryClient = new QueryClient();
 
 const AdminComponent = () => {
 
@@ -62,13 +64,15 @@ const AdminComponent = () => {
                     </article>
 
                     <article className="admin__right__content">
-                        <form action="">
-                            <div className="formcontainer">
-                                <Outlet />
-                                <button className="formcontainer-submitbtn"> Submit </button>
-                            </div>
+                        {/* <form action="">
+                            <div className="formcontainer"> */}
+                                <QueryClientProvider client={queryClient} >
+                                    <Outlet />
+                                </QueryClientProvider>
+                                {/* <button className="formcontainer-submitbtn"> Submit </button> */}
+                            {/* </div>
 
-                        </form>
+                        </form> */}
                     </article>
                 </article>
             </section>
