@@ -8,8 +8,6 @@ import SyllabusComponent from "./SyllabusComponent";
 import MediumOfInstructionComponent from "./MediumOfInstructionComponent";
 import ClassComponent from "./ClassComponent";
 import SubjectComponent from "./SubjectComponent";
-import ChaptersComponent from "./ChaptersComponent";
-import TopicsComponent from "./TopicsComponent";
 import ContentTypeComponent from "./ContentTypeComponent";
 
 function BasicConfiguration() {
@@ -35,12 +33,6 @@ function BasicConfiguration() {
     }
     if (activeTab === "subject") {
       return <SubjectComponent handleAddOption={handleAddOption} />
-    }
-    if (activeTab === "chapter") {
-      return <ChaptersComponent handleAddOption={handleAddOption} />
-    }
-    if (activeTab === "topic") {
-      return <TopicsComponent handleAddOption={handleAddOption} />
     }
     if (activeTab === "contentype") {
       return <ContentTypeComponent handleAddOption={handleAddOption} />
@@ -73,18 +65,6 @@ function BasicConfiguration() {
           onClick={() => handleTabChange("subject")}
         >
           Subject
-        </div>
-        <div
-          className={`admin__right__content__tab-switcher__tabs-tab ${activeTab === "chapter" ? "active" : ""}`}
-          onClick={() => handleTabChange("chapter")}
-        >
-          Chapter
-        </div>
-        <div
-          className={`admin__right__content__tab-switcher__tabs-tab ${activeTab === "topic" ? "active" : ""}`}
-          onClick={() => handleTabChange("topic")}
-        >
-          Topics
         </div>
         <div
           className={`admin__right__content__tab-switcher__tabs-tab ${activeTab === "contentype" ? "active" : ""}`}

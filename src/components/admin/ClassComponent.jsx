@@ -1,30 +1,146 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import deleteicon from '../../assets/Deleteicon.png';
 import editicon from '../../assets/Editicon.png';
 import FetchData from "../../services/FetchData";
+import checkmarkIcon from "../../assets/saveicon.png"
+import cancelIcon from "../../assets/cancelicon.png"
+import Authorization from '../../authorization';
 
-
-const ClassComponent = (handleAddOption) => {
-    const [classoptions, setClassOptions] = useState([]);
-    const [newclass, setNewClass] = useState("");
-    const handleclass = (e) => {
-        setNewClass(e.target.value);
-      };    
+const ClassComponent = () => {
     const { data, error, isLoading } = useQuery(
         'class_data',
         () => FetchData("http://localhost:8080/schooling")
     );
 
-
+    const [classoptions, setClassOptions] = useState([]);
+    const [newclass, setNewClass] = useState("");
+    const [editedText, setEditedText] = useState(""); // New state for edited text
+    const [editingIndex, setEditingIndex] = useState(-1);
+    const [originalOptions, setOriginalOptions] = useState([]);
+    
     useEffect(() => {
         if (!isLoading && !error) {
             setClassOptions({
                 "_id": data[0]?._id,
                 "schooling": data[0]?.schooling
             })
+            setOriginalOptions(data[0]?.schooling);
         }
     }, [data, isLoading, error]);
+
+    const handleclass = (e) => {
+        setNewClass(e.target.value);
+    };
+
+    const startEditing = (index, option) => {
+        setEditingIndex(index);
+        setEditedText(option);
+    };
+
+    const cancelEditing = () => {
+        setEditingIndex(-1);
+        setEditedText("");
+    };
+
+    const revertToOriginal = (index) => {
+        setEditingIndex(-1);
+        setEditedText("");
+        const updatedOptions = [...classoptions];
+        updatedOptions[index] = originalOptions[index];
+        setClassOptions(updatedOptions);
+    };
+
+    const saveEditedClass = async (option, index, documentId) => {
+        // Implement save logic
+        // Reset editingIndex and editedText after successful save
+        try {
+            const response = await fetch(
+                "http://localhost:8080/schooling",
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': Authorization
+                    },
+                    body: JSON.stringify({
+                        "documentId": documentId,
+                        "level": option,
+                        "arrayIndex": index
+                    })
+                }
+            );
+            if (response.ok) {
+                alert("Data Edited Successfully")
+            } else {
+                console.error('PUT request failed');
+            }
+        }
+        catch (error) {
+            console.log(error)
+        }
+        revertToOriginal(index)
+    };
+
+    const postClass = async (documentId) => {
+        if (newclass.trim() === "") {
+            return;
+        }
+        try {
+            const response = await fetch(
+                "http://localhost:8080/schooling",
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': Authorization
+                    },
+                    body: JSON.stringify({
+                        "documentId": documentId,
+                        "level": newclass
+                    })
+                }
+            );
+            if (response.ok) {
+                setNewClass("")
+                console.log('Post request successful');
+            } else {
+                console.error('Post request failed');
+            }
+        }
+        catch (error) {
+            console.log(error)
+        }
+    };
+
+    const deleteClass = async (documentId, option) => {
+        // Implement delete logic
+        try {
+            const response = await fetch(
+                "http://localhost:8080/schooling",
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': Authorization
+                    },
+                    body: JSON.stringify({
+                        "documentId": documentId,
+                        "level": option
+                    })
+                }
+            );
+            if (response.ok) {
+                alert("Deleted Successfully")
+            } else {
+                console.error("Delete request failed");
+            }
+        }
+        catch (error) {
+            console.log(error)
+        }
+
+    };
 
     if (isLoading) {
         return (
@@ -39,18 +155,58 @@ const ClassComponent = (handleAddOption) => {
     if (error) {
         return <div>Error: {error.message}</div>;
     }
+
+
     return (
         <div className="basicconfigurationblock">
+            {console.log(classoptions)
+            }
             <div className="options">
                 {
                     (classoptions && classoptions?.schooling) && (
-                        classoptions?.schooling.map((option, index) => (
+                        classoptions.schooling.map((option, index) => (
                             <div className="option" key={index}>
-                                {/* {option.title} */}
-                                {option}
+                                {editingIndex === index ? (
+                                    <input
+                                        type="text"
+                                        value={editedText}
+                                        onChange={(e) => setEditedText(e.target.value)}
+                                    />
+                                ) : (
+                                    option
+                                )}
                                 <span className="icons">
-                                    <img src={editicon} alt="Edit" className="icon" />
-                                    <img src={deleteicon} alt="Delete" className="icon" />
+                                    {editingIndex === index ? (
+                                        <>
+                                            <img
+                                                src={checkmarkIcon}
+                                                alt="Save"
+                                                className="icon"
+                                                onClick={() => saveEditedClass(editedText, index, classoptions?._id)}
+                                            />
+                                            <img
+                                                src={cancelIcon}
+                                                alt="Cancel"
+                                                className="icon"
+                                                onClick={() => revertToOriginal(index)}
+                                            />
+                                        </>
+                                    ) : (
+                                        <>
+                                            <img
+                                                src={editicon}
+                                                alt="Edit"
+                                                className="icon"
+                                                onClick={() => startEditing(index, option)}
+                                            />
+                                            <img
+                                                src={deleteicon}
+                                                alt="Delete"
+                                                className="icon"
+                                                onClick={() => deleteClass(classoptions?._id, option)}
+                                            />
+                                        </>
+                                    )}
                                 </span>
                             </div>
                         ))
@@ -64,12 +220,10 @@ const ClassComponent = (handleAddOption) => {
                     onChange={handleclass}
                     placeholder="Enter an option"
                 />
-                <button 
-                // onClick={handleAddOption}
-                >Add</button>
+                <button onClick={() => postClass(classoptions?._id)}>Add</button>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default ClassComponent
+export default ClassComponent;

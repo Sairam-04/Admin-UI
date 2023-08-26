@@ -1,30 +1,143 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import deleteicon from '../../assets/Deleteicon.png';
 import editicon from '../../assets/Editicon.png';
 import FetchData from "../../services/FetchData";
+import checkmarkIcon from "../../assets/saveicon.png"
+import cancelIcon from "../../assets/cancelicon.png"
+import Authorization from '../../authorization';
 
-
-const SyllabusComponent = (handleAddOption) => {
-    const [syllabusoptions, setsyllabusOptions] = useState({});
-    const [newsyllabus, setNewSyllabus] = useState("");
-    const handlesyllabus = (e) => {
-        setNewSyllabus(e.target.value);
-      };    
+const SyllabusComponent = () => {
     const { data, error, isLoading } = useQuery(
-        'syllabus_data',
+        'curriculum_data',
         () => FetchData("http://localhost:8080/curriculum")
     );
 
-
+    const [syllabusoptions, setSyllabusOptions] = useState([]);
+    const [newsyllabus, setNewSyllabus] = useState("");
+    const [editedText, setEditedText] = useState(""); // New state for edited text
+    const [editingIndex, setEditingIndex] = useState(-1);
+    const [originalOptions, setOriginalOptions] = useState([]);
+    
     useEffect(() => {
         if (!isLoading && !error) {
-            setsyllabusOptions({
+            setSyllabusOptions({
                 "_id": data[0]?._id,
                 "syllabus": data[0]?.syllabus
             })
+            setOriginalOptions(data[0]?.syllabus);
         }
     }, [data, isLoading, error]);
+
+    const handlesyllabus = (e) => {
+        setNewSyllabus(e.target.value);
+    };
+
+    const startEditing = (index, option) => {
+        setEditingIndex(index);
+        setEditedText(option);
+    };
+
+    const cancelEditing = () => {
+        setEditingIndex(-1);
+        setEditedText("");
+    };
+
+    const revertToOriginal = (index) => {
+        setEditingIndex(-1);
+        setEditedText("");
+        const updatedOptions = [...syllabusoptions];
+        updatedOptions[index] = originalOptions[index];
+        setSyllabusOptions(updatedOptions);
+    };
+
+    const saveEditedSyllabus = async (option, index, documentId) => {
+        try {
+            const response = await fetch(
+                "http://localhost:8080/curriculum",
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': Authorization
+                    },
+                    body: JSON.stringify({
+                        "documentId": documentId,
+                        "board": option,
+                        "arrayIndex": index
+                    })
+                }
+            );
+            if (response.ok) {
+                alert("Data Edited Successfully")
+            } else {
+                console.error('PUT request failed');
+            }
+        }
+        catch (error) {
+            console.log(error)
+        }
+        revertToOriginal(index)
+    };
+
+    const postSyllabus = async (documentId) => {
+        if (newsyllabus.trim() === "") {
+            return;
+        }
+        try {
+            const response = await fetch(
+                "http://localhost:8080/curriculum",
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': Authorization
+                    },
+                    body: JSON.stringify({
+                        "documentId": documentId,
+                        "board": newsyllabus
+                    })
+                }
+            );
+            if (response.ok) {
+                setNewSyllabus("")
+                alert("Data Submitted Successfully")
+            } else {
+                console.error('Post request failed');
+            }
+        }
+        catch (error) {
+            console.log(error)
+        }
+    };
+
+    const deleteSyllabus = async (documentId, option) => {
+        // Implement delete logic
+        try {
+            const response = await fetch(
+                "http://localhost:8080/curriculum",
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': Authorization
+                    },
+                    body: JSON.stringify({
+                        "documentId": documentId,
+                        "board": option
+                    })
+                }
+            );
+            if (response.ok) {
+                alert("Deleted Successfully")
+            } else {
+                console.error("Delete request failed");
+            }
+        }
+        catch (error) {
+            console.log(error)
+        }
+    };
 
     if (isLoading) {
         return (
@@ -39,17 +152,56 @@ const SyllabusComponent = (handleAddOption) => {
     if (error) {
         return <div>Error: {error.message}</div>;
     }
+
+
     return (
         <div className="basicconfigurationblock">
             <div className="options">
                 {
                     (syllabusoptions && syllabusoptions?.syllabus) && (
-                        syllabusoptions?.syllabus.map((option, index) => (
+                        syllabusoptions.syllabus.map((option, index) => (
                             <div className="option" key={index}>
-                                {option.title}
+                                {editingIndex === index ? (
+                                    <input
+                                        type="text"
+                                        value={editedText}
+                                        onChange={(e) => setEditedText(e.target.value)}
+                                    />
+                                ) : (
+                                    option
+                                )}
                                 <span className="icons">
-                                    <img src={editicon} alt="Edit" className="icon" />
-                                    <img src={deleteicon} alt="Delete" className="icon" />
+                                    {editingIndex === index ? (
+                                        <>
+                                            <img
+                                                src={checkmarkIcon}
+                                                alt="Save"
+                                                className="icon"
+                                                onClick={() => saveEditedSyllabus(editedText, index, syllabusoptions?._id)}
+                                            />
+                                            <img
+                                                src={cancelIcon}
+                                                alt="Cancel"
+                                                className="icon"
+                                                onClick={() => revertToOriginal(index)}
+                                            />
+                                        </>
+                                    ) : (
+                                        <>
+                                            <img
+                                                src={editicon}
+                                                alt="Edit"
+                                                className="icon"
+                                                onClick={() => startEditing(index, option)}
+                                            />
+                                            <img
+                                                src={deleteicon}
+                                                alt="Delete"
+                                                className="icon"
+                                                onClick={() => deleteSyllabus(syllabusoptions?._id,option)}
+                                            />
+                                        </>
+                                    )}
                                 </span>
                             </div>
                         ))
@@ -63,12 +215,10 @@ const SyllabusComponent = (handleAddOption) => {
                     onChange={handlesyllabus}
                     placeholder="Enter an option"
                 />
-                <button 
-                // onClick={handleAddOption}
-                >Add</button>
+                <button onClick={() => postSyllabus(syllabusoptions?._id)}>Add</button>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default SyllabusComponent
+export default SyllabusComponent;

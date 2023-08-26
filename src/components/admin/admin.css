@@ -204,6 +204,8 @@
   gap: 0.75rem;
 }
 .admin__right__content__tab-switcher .options .option .icons img {
+  width: 1.5vw;
+  height: 3.5vh;
   cursor: pointer;
 }
 .admin__right__content__tab-switcher .options .option .icons span {
