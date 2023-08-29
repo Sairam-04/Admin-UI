@@ -6,8 +6,10 @@ import FetchData from "../../services/FetchData";
 import checkmarkIcon from "../../assets/saveicon.png"
 import cancelIcon from "../../assets/cancelicon.png"
 import Authorization from '../../authorization';
+import { getAdmin } from '../../utils/localstorage';
 
 const ClassComponent = () => {
+    const { role } = getAdmin()
     const { data, error, isLoading } = useQuery(
         'class_data',
         () => FetchData("http://localhost:8080/schooling")
@@ -18,7 +20,7 @@ const ClassComponent = () => {
     const [editedText, setEditedText] = useState(""); // New state for edited text
     const [editingIndex, setEditingIndex] = useState(-1);
     const [originalOptions, setOriginalOptions] = useState([]);
-    
+
     useEffect(() => {
         if (!isLoading && !error) {
             setClassOptions({
@@ -159,8 +161,6 @@ const ClassComponent = () => {
 
     return (
         <div className="basicconfigurationblock">
-            {console.log(classoptions)
-            }
             <div className="options">
                 {
                     (classoptions && classoptions?.schooling) && (
@@ -175,39 +175,49 @@ const ClassComponent = () => {
                                 ) : (
                                     option
                                 )}
-                                <span className="icons">
-                                    {editingIndex === index ? (
-                                        <>
-                                            <img
-                                                src={checkmarkIcon}
-                                                alt="Save"
-                                                className="icon"
-                                                onClick={() => saveEditedClass(editedText, index, classoptions?._id)}
-                                            />
-                                            <img
-                                                src={cancelIcon}
-                                                alt="Cancel"
-                                                className="icon"
-                                                onClick={() => revertToOriginal(index)}
-                                            />
-                                        </>
+                                {
+                                    (role === "super_admin") ? (
+                                        <span className="icons">
+                                            {editingIndex === index ? (
+                                                <>
+                                                    <img
+                                                        src={checkmarkIcon}
+                                                        alt="Save"
+                                                        className="icon"
+                                                        onClick={() => saveEditedClass(editedText, index, classoptions?._id)}
+                                                    />
+                                                    <img
+                                                        src={cancelIcon}
+                                                        alt="Cancel"
+                                                        className="icon"
+                                                        onClick={() => revertToOriginal(index)}
+                                                    />
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <img
+                                                        src={editicon}
+                                                        alt="Edit"
+                                                        className="icon"
+                                                        onClick={() => startEditing(index, option)}
+                                                    />
+                                                    <img
+                                                        src={deleteicon}
+                                                        alt="Delete"
+                                                        className="icon"
+                                                        onClick={() => {
+                                                            if (window.confirm('Are you sure you want to delete this Curriculum?')) {
+                                                                deleteClass(classoptions?._id, option)
+                                                            }
+                                                        }}
+                                                    />
+                                                </>
+                                            )}
+                                        </span>
                                     ) : (
-                                        <>
-                                            <img
-                                                src={editicon}
-                                                alt="Edit"
-                                                className="icon"
-                                                onClick={() => startEditing(index, option)}
-                                            />
-                                            <img
-                                                src={deleteicon}
-                                                alt="Delete"
-                                                className="icon"
-                                                onClick={() => deleteClass(classoptions?._id, option)}
-                                            />
-                                        </>
-                                    )}
-                                </span>
+                                        null
+                                    )
+                                }
                             </div>
                         ))
                     )

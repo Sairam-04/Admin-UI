@@ -10,7 +10,7 @@ const AdminLogin = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("operations_admin"); // Default role
+  const [role, setRole] = useState(""); // Default role
   const [showPassword, setShowPassword] = useState(false);
   const [focusField, setFocusField] = useState(null);
 
@@ -156,6 +156,7 @@ const AdminLogin = () => {
               onChange={handleRoleChange}
               className="role-dropdown"
             >
+              <option value="none">Select</option>
               <option value="operations_admin">Operations Admin</option>
               <option value="super_admin">Super Admin</option>
             </select>

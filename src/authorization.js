@@ -1,2 +1,4 @@
-const Authorization = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU1N2RiOWVkOTFkNzQ0MWQ3YTllZDUiLCJlbWFpbCI6InN1cGVyYWRtaW5AYnJhbmVlZHVjYXRpb24uY29tIiwicGFzc3dvcmQiOiJCckBuZTEyMyIsInJvbGUiOiJzdXBlcl9hZG1pbiIsImF2YXRhciI6Imh0dHBzOi8vcmVxcmVzLmluL2ltZy9mYWNlcy84LWltYWdlLmpwZyIsImlhdCI6MTY5MzIwMjIzMCwiZXhwIjoxNjkzMjg4NjMwfQ.i2hxA6hOFa50kBSnJjMvfqnEfE_koCqKNZkgouE4rok"
+import { getAdmin } from "./utils/localstorage"
+const {token, role} = getAdmin()
+const Authorization = token
 export default Authorization

@@ -6,8 +6,10 @@ import FetchData from "../../services/FetchData";
 import checkmarkIcon from "../../assets/saveicon.png"
 import cancelIcon from "../../assets/cancelicon.png"
 import Authorization from '../../authorization';
+import { getAdmin } from '../../utils/localstorage';
 
 const SubjectComponent = () => {
+    const { role } = getAdmin();
     const { data, error, isLoading } = useQuery(
         'subject_data',
         () => FetchData("http://localhost:8080/subject")
@@ -18,7 +20,7 @@ const SubjectComponent = () => {
     const [editedText, setEditedText] = useState(""); // New state for edited text
     const [editingIndex, setEditingIndex] = useState(-1);
     const [originalOptions, setOriginalOptions] = useState([]);
-    
+
     useEffect(() => {
         if (!isLoading && !error) {
             setSubjectOptions({
@@ -170,39 +172,49 @@ const SubjectComponent = () => {
                                 ) : (
                                     option
                                 )}
-                                <span className="icons">
-                                    {editingIndex === index ? (
-                                        <>
-                                            <img
-                                                src={checkmarkIcon}
-                                                alt="Save"
-                                                className="icon"
-                                                onClick={() => saveEditedSubject(editedText, index, subjectoptions?._id)}
-                                            />
-                                            <img
-                                                src={cancelIcon}
-                                                alt="Cancel"
-                                                className="icon"
-                                                onClick={() => revertToOriginal(index)}
-                                            />
-                                        </>
+                                {
+                                    (role === "super_admin") ? (
+                                        <span className="icons">
+                                            {editingIndex === index ? (
+                                                <>
+                                                    <img
+                                                        src={checkmarkIcon}
+                                                        alt="Save"
+                                                        className="icon"
+                                                        onClick={() => saveEditedSubject(editedText, index, subjectoptions?._id)}
+                                                    />
+                                                    <img
+                                                        src={cancelIcon}
+                                                        alt="Cancel"
+                                                        className="icon"
+                                                        onClick={() => revertToOriginal(index)}
+                                                    />
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <img
+                                                        src={editicon}
+                                                        alt="Edit"
+                                                        className="icon"
+                                                        onClick={() => startEditing(index, option)}
+                                                    />
+                                                    <img
+                                                        src={deleteicon}
+                                                        alt="Delete"
+                                                        className="icon"
+                                                        onClick={() => {
+                                                            if (window.confirm('Are you sure you want to delete this Curriculum?')) {
+                                                                deleteSubject(subjectoptions?._id, option)
+                                                            }
+                                                        }}
+                                                    />
+                                                </>
+                                            )}
+                                        </span>
                                     ) : (
-                                        <>
-                                            <img
-                                                src={editicon}
-                                                alt="Edit"
-                                                className="icon"
-                                                onClick={() => startEditing(index, option)}
-                                            />
-                                            <img
-                                                src={deleteicon}
-                                                alt="Delete"
-                                                className="icon"
-                                                onClick={() => deleteSubject(subjectoptions?._id, option)}
-                                            />
-                                        </>
-                                    )}
-                                </span>
+                                        null
+                                    )
+                                }
                             </div>
                         ))
                     )

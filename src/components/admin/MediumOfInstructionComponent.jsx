@@ -6,8 +6,10 @@ import FetchData from "../../services/FetchData";
 import checkmarkIcon from "../../assets/saveicon.png"
 import cancelIcon from "../../assets/cancelicon.png"
 import Authorization from '../../authorization';
+import { getAdmin } from '../../utils/localstorage';
 
 const MediumOfInstructionComponent = () => {
+    const { role } = getAdmin()
     const { data, error, isLoading } = useQuery(
         'moi_data',
         () => FetchData("http://localhost:8080/medium_of_instruction")
@@ -115,7 +117,7 @@ const MediumOfInstructionComponent = () => {
         }
     };
 
-    const deleteMOI = async (documentId,option) => {
+    const deleteMOI = async (documentId, option) => {
         // Implement delete logic
         try {
             const response = await fetch(
@@ -175,39 +177,49 @@ const MediumOfInstructionComponent = () => {
                                 ) : (
                                     option
                                 )}
-                                <span className="icons">
-                                    {editingIndex === index ? (
-                                        <>
-                                            <img
-                                                src={checkmarkIcon}
-                                                alt="Save"
-                                                className="icon"
-                                                onClick={() => saveEditedMOI(editedText, index, moioptions?._id)}
-                                            />
-                                            <img
-                                                src={cancelIcon}
-                                                alt="Cancel"
-                                                className="icon"
-                                                onClick={() => revertToOriginal(index)}
-                                            />
-                                        </>
+                                {
+                                    (role === "super_admin") ? (
+                                        <span className="icons">
+                                            {editingIndex === index ? (
+                                                <>
+                                                    <img
+                                                        src={checkmarkIcon}
+                                                        alt="Save"
+                                                        className="icon"
+                                                        onClick={() => saveEditedMOI(editedText, index, moioptions?._id)}
+                                                    />
+                                                    <img
+                                                        src={cancelIcon}
+                                                        alt="Cancel"
+                                                        className="icon"
+                                                        onClick={() => revertToOriginal(index)}
+                                                    />
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <img
+                                                        src={editicon}
+                                                        alt="Edit"
+                                                        className="icon"
+                                                        onClick={() => startEditing(index, option)}
+                                                    />
+                                                    <img
+                                                        src={deleteicon}
+                                                        alt="Delete"
+                                                        className="icon"
+                                                        onClick={() => {
+                                                            if (window.confirm('Are you sure you want to delete this chapter?')) {
+                                                                deleteMOI(moioptions?._id, option)
+                                                            }
+                                                        }}
+                                                    />
+                                                </>
+                                            )}
+                                        </span>
                                     ) : (
-                                        <>
-                                            <img
-                                                src={editicon}
-                                                alt="Edit"
-                                                className="icon"
-                                                onClick={() => startEditing(index, option)}
-                                            />
-                                            <img
-                                                src={deleteicon}
-                                                alt="Delete"
-                                                className="icon"
-                                                onClick={() => deleteMOI(moioptions?._id,option)}
-                                            />
-                                        </>
-                                    )}
-                                </span>
+                                        null
+                                    )
+                                }
                             </div>
                         ))
                     )

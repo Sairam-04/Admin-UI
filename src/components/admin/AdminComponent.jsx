@@ -25,7 +25,9 @@ const AdminComponent = () => {
             case '/basic-configuration':
                 return 'Basic Configuration';
             case '/upload-syllabus':
-                return 'Upload Syllabus';
+                return 'Upload Chapters Syllabus';
+            case '/upload-topic-syllabus':
+                return 'Upload Topics Syllabus'
             case '/content-configuration':
                 return 'Content Configuration';
             case '/content-upload':
@@ -37,7 +39,7 @@ const AdminComponent = () => {
         }
     };
 
-    const handleLogout = () =>{
+    const handleLogout = () => {
         removeAdmin()
         navigate("/login")
     }
@@ -56,7 +58,8 @@ const AdminComponent = () => {
                                     <li><Link to="/homepage">HomePage</Link></li>
                                     <li><Link to="/landingpage">LandingPage</Link></li>
                                     <li><Link to="/basic-configuration">Basic Configuration</Link></li>
-                                    <li><Link to="/upload-syllabus">Upload Syllabus</Link></li>
+                                    <li><Link to="/upload-syllabus">Upload Chapters Syllabus</Link></li>
+                                    <li><Link to="/upload-topic-syllabus">Upload Topics Syllabus</Link></li>
                                     <li><Link to="/content-configuration">Content Configuration</Link></li>
                                     <li><Link to="/content-upload">Content Upload</Link></li>
                                     <li><Link to="/assessment-configuration">Assessment Configuration</Link></li>
@@ -74,9 +77,18 @@ const AdminComponent = () => {
                                         {getTitle()}
                                     </div>
                                     <div className="admin__right__header__profile">
-                                        <div>
-                                            Super Admin
-                                        </div>
+                                        {
+                                            (role === "super_admin") ?
+                                                (
+                                                    <div>
+                                                        Super Admin
+                                                    </div>
+                                                ) : (
+                                                    <div>
+                                                        Operation Admin
+                                                    </div>
+                                                )
+                                        }
                                         <div>
                                             <img src={Avatarimg} alt="Profile Image" />
                                         </div>
@@ -84,15 +96,10 @@ const AdminComponent = () => {
                                 </article>
 
                                 <article className="admin__right__content">
-                                    {/* <form action="">
-                            <div className="formcontainer"> */}
                                     <QueryClientProvider client={queryClient} >
                                         <Outlet />
                                     </QueryClientProvider>
-                                    {/* <button className="formcontainer-submitbtn"> Submit </button> */}
-                                    {/* </div>
 
-                        </form> */}
                                 </article>
                             </article>
                         </section>

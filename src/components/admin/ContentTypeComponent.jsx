@@ -6,8 +6,10 @@ import FetchData from "../../services/FetchData";
 import checkmarkIcon from "../../assets/saveicon.png"
 import cancelIcon from "../../assets/cancelicon.png"
 import Authorization from '../../authorization';
+import { getAdmin } from '../../utils/localstorage';
 
 const ContentTypeComponent = () => {
+    const {role} = getAdmin()
     const { data, error, isLoading } = useQuery(
         'contenttype_data',
         () => FetchData("http://localhost:8080/content_types")
@@ -114,7 +116,7 @@ const ContentTypeComponent = () => {
         }
     };
 
-    const deleteMOI = async (documentId,option) => {
+    const deleteContentType = async (documentId, option) => {
         try {
             const response = await fetch(
                 "http://localhost:8080/content_types",
@@ -172,39 +174,49 @@ const ContentTypeComponent = () => {
                                 ) : (
                                     option
                                 )}
-                                <span className="icons">
-                                    {editingIndex === index ? (
-                                        <>
-                                            <img
-                                                src={checkmarkIcon}
-                                                alt="Save"
-                                                className="icon"
-                                                onClick={() => saveEditedContentType(editedText, index, contenttypeoptions?._id)}
-                                            />
-                                            <img
-                                                src={cancelIcon}
-                                                alt="Cancel"
-                                                className="icon"
-                                                onClick={() => revertToOriginal(index)}
-                                            />
-                                        </>
+                                {
+                                    (role == "super_admin") ? (
+                                        <span className="icons">
+                                            {editingIndex === index ? (
+                                                <>
+                                                    <img
+                                                        src={checkmarkIcon}
+                                                        alt="Save"
+                                                        className="icon"
+                                                        onClick={() => saveEditedContentType(editedText, index, contenttypeoptions?._id)}
+                                                    />
+                                                    <img
+                                                        src={cancelIcon}
+                                                        alt="Cancel"
+                                                        className="icon"
+                                                        onClick={() => revertToOriginal(index)}
+                                                    />
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <img
+                                                        src={editicon}
+                                                        alt="Edit"
+                                                        className="icon"
+                                                        onClick={() => startEditing(index, option)}
+                                                    />
+                                                    <img
+                                                        src={deleteicon}
+                                                        alt="Delete"
+                                                        className="icon"
+                                                        onClick={() => {
+                                                            if (window.confirm('Are you sure you want to delete this Curriculum?')) {
+                                                                deleteContentType(contenttypeoptions?._id, option)
+                                                            }
+                                                        }}
+                                                    />
+                                                </>
+                                            )}
+                                        </span>
                                     ) : (
-                                        <>
-                                            <img
-                                                src={editicon}
-                                                alt="Edit"
-                                                className="icon"
-                                                onClick={() => startEditing(index, option)}
-                                            />
-                                            <img
-                                                src={deleteicon}
-                                                alt="Delete"
-                                                className="icon"
-                                                onClick={() => deleteMOI(contenttypeoptions?._id,option)}
-                                            />
-                                        </>
-                                    )}
-                                </span>
+                                        null
+                                    )
+                                }
                             </div>
                         ))
                     )

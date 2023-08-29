@@ -40,10 +40,6 @@ const SyllabusComponent = () => {
         setEditedText(option);
     };
 
-    const cancelEditing = () => {
-        setEditingIndex(-1);
-        setEditedText("");
-    };
 
     const revertToOriginal = (index) => {
         setEditingIndex(-1);
@@ -202,7 +198,11 @@ const SyllabusComponent = () => {
                                                         src={deleteicon}
                                                         alt="Delete"
                                                         className="icon"
-                                                        onClick={() => deleteSyllabus(syllabusoptions?._id, option)}
+                                                        onClick={() => {
+                                                            if (window.confirm('Are you sure you want to delete this Curriculum?')) {
+                                                                deleteSyllabus(syllabusoptions?._id, option)
+                                                              }
+                                                        }}
                                                     />
                                                 </>
                                             )}
