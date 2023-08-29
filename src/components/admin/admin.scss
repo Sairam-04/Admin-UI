@@ -127,6 +127,59 @@
                 flex-direction: column;
                 gap: 1rem;
 
+                &__topic {
+                    display: flex;
+
+                    &__text {
+                        display: flex;
+                        gap: 1rem;
+                        background-color: #ffff;
+                        align-items: center;
+                        padding: .25rem;
+                    }
+
+                    &__dropdown {
+                        width: 7vw;
+                        max-height: 4vh;
+                        color: #2B3674;
+                        font-weight: 500;
+                    }
+
+                    &__lable {
+                        color: #2B3674;
+                        font-weight: 600;
+                        width: 15%;
+                    }
+
+                    &__btn {
+                        background: #FFB039;
+                        color: #000000;
+                        border-radius: 1rem;
+                        border: none;
+                        padding: .5rem;
+                        cursor: pointer;
+                    }
+
+                    &__list-item {
+                        display: flex;
+                        gap: 1rem;
+                        background-color: white;
+                        width: 25rem;
+                        height: 1.5rem;
+                        margin-top: 0.5rem;
+                        margin-left: 10rem;
+                    }
+
+                    &__add {
+                        background-color: #C3C3C3;
+                        color: black;
+                        padding: .25rem;
+                        border-radius: .5rem;
+                        border: none;
+                        cursor: pointer;
+                    }
+                }
+
                 &__inputfield {
                     display: flex;
 
@@ -144,7 +197,7 @@
                         font-weight: 600;
                     }
 
-                    &__data {
+                    /*&__data {
                         background: white;
                         padding: 0.25rem;
                         display: flex;
@@ -187,7 +240,7 @@
                                 cursor: pointer;
                             }
                         }
-                    }
+                    }*/
                 }
             }
 

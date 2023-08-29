@@ -6,19 +6,21 @@ import FetchData from "../../services/FetchData";
 import checkmarkIcon from "../../assets/saveicon.png"
 import cancelIcon from "../../assets/cancelicon.png"
 import Authorization from '../../authorization';
+import { getAdmin } from '../../utils/localstorage';
 
 const SyllabusComponent = () => {
     const { data, error, isLoading } = useQuery(
         'curriculum_data',
         () => FetchData("http://localhost:8080/curriculum")
     );
+    const { token, role } = getAdmin()
 
     const [syllabusoptions, setSyllabusOptions] = useState([]);
     const [newsyllabus, setNewSyllabus] = useState("");
     const [editedText, setEditedText] = useState(""); // New state for edited text
     const [editingIndex, setEditingIndex] = useState(-1);
     const [originalOptions, setOriginalOptions] = useState([]);
-    
+
     useEffect(() => {
         if (!isLoading && !error) {
             setSyllabusOptions({
@@ -170,39 +172,43 @@ const SyllabusComponent = () => {
                                 ) : (
                                     option
                                 )}
-                                <span className="icons">
-                                    {editingIndex === index ? (
-                                        <>
-                                            <img
-                                                src={checkmarkIcon}
-                                                alt="Save"
-                                                className="icon"
-                                                onClick={() => saveEditedSyllabus(editedText, index, syllabusoptions?._id)}
-                                            />
-                                            <img
-                                                src={cancelIcon}
-                                                alt="Cancel"
-                                                className="icon"
-                                                onClick={() => revertToOriginal(index)}
-                                            />
-                                        </>
-                                    ) : (
-                                        <>
-                                            <img
-                                                src={editicon}
-                                                alt="Edit"
-                                                className="icon"
-                                                onClick={() => startEditing(index, option)}
-                                            />
-                                            <img
-                                                src={deleteicon}
-                                                alt="Delete"
-                                                className="icon"
-                                                onClick={() => deleteSyllabus(syllabusoptions?._id,option)}
-                                            />
-                                        </>
-                                    )}
-                                </span>
+                                {
+                                    (role === "super_admin") ? (
+                                        <span className="icons">
+                                            {editingIndex === index ? (
+                                                <>
+                                                    <img
+                                                        src={checkmarkIcon}
+                                                        alt="Save"
+                                                        className="icon"
+                                                        onClick={() => saveEditedSyllabus(editedText, index, syllabusoptions?._id)}
+                                                    />
+                                                    <img
+                                                        src={cancelIcon}
+                                                        alt="Cancel"
+                                                        className="icon"
+                                                        onClick={() => revertToOriginal(index)}
+                                                    />
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <img
+                                                        src={editicon}
+                                                        alt="Edit"
+                                                        className="icon"
+                                                        onClick={() => startEditing(index, option)}
+                                                    />
+                                                    <img
+                                                        src={deleteicon}
+                                                        alt="Delete"
+                                                        className="icon"
+                                                        onClick={() => deleteSyllabus(syllabusoptions?._id, option)}
+                                                    />
+                                                </>
+                                            )}
+                                        </span>
+                                    ) : null
+                                }
                             </div>
                         ))
                     )

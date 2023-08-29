@@ -1,0 +1,151 @@
+$body-font-size: 0.875rem;
+/* Slightly smaller font size */
+$primary-color: #007bff;
+
+.admin-login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('../../assets/');
+    background-size: cover;
+    background-position: center;
+}
+
+.company-logo {
+    position: absolute;
+    top: 1rem;
+    /* Adjusted top spacing */
+    left: 1rem;
+    /* Adjusted left spacing */
+
+    img {
+        max-width: 9rem;
+        /* Slightly smaller logo */
+        height: auto;
+    }
+}
+
+.admin-login-form {
+    background-color: white;
+    padding: 2rem 2.2rem;
+    /* Slightly smaller padding */
+    border-radius: 0.375rem;
+    /* Slightly smaller border radius */
+    box-shadow: 0.125rem 0.125rem 1rem rgba(0, 0, 0, 0.13);
+    max-width: 23rem;
+    /* Slightly smaller max-width */
+    width: 100%;
+    color: black;
+
+    .form-group {
+        margin-bottom: 0.625rem;
+        /* Slightly smaller margin */
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input,
+    select {
+        width: 100%;
+        padding: 0.5rem;
+        /* Slightly smaller padding */
+        border: 0.0625rem solid #ccc;
+        border-radius: 0.125rem;
+        /* Slightly smaller border radius */
+        font-size: $body-font-size;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color: $primary-color;
+        color: white;
+        padding: 0.5rem 1rem;
+        /* Slightly smaller padding */
+        border: none;
+        border-radius: 0.125rem;
+        /* Slightly smaller border radius */
+        cursor: pointer;
+        width: 100%;
+        font-weight: 500;
+        font-size: 1rem;
+        /* Back to normal font size */
+        margin-top: 0.3125rem;
+        /* Slightly smaller margin */
+    }
+
+    .admin-login-title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin-bottom: 0.75rem;
+        /* Slightly smaller margin */
+
+        .admin-login-title-head {
+            font-size: 1.25rem;
+            /* Slightly smaller font size */
+            font-weight: 600;
+            margin-bottom: 0.15rem;
+            /* Slightly smaller margin */
+        }
+    }
+
+    .password-input {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        .password-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            position: absolute;
+            right: -21rem;
+            top: 15%;
+            /* Adjusted top positioning */
+
+            img {
+                width: 1rem;
+                /* Slightly smaller icon size */
+                height: 1rem;
+                /* Slightly smaller icon size */
+            }
+        }
+    }
+
+    .role-label {
+        font-weight: bold;
+        margin-right: 0.3125rem;
+        /* Slightly smaller margin */
+    }
+
+    .role-dropdown {
+        width: 100%;
+        padding: 0.5rem;
+        /* Slightly smaller padding */
+        border: 0.0625rem solid #ccc;
+        border-radius: 0.125rem;
+        /* Slightly smaller border radius */
+        font-size: $body-font-size;
+    }
+
+    .popover {
+        display: none;
+        font-size: 0.75rem;
+        /* Slightly smaller font size */
+        color: red;
+        margin-top: 0.1875rem;
+        /* Slightly smaller margin */
+    }
+
+    .popover.red {
+        display: block;
+    }
+}

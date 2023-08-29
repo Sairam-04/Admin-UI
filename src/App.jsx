@@ -8,12 +8,14 @@ import ContentUpload from './components/admin/ContentUpload'
 import AssessmentConfiguration from './components/admin/AssessmentConfiguration'
 import HomePage from './components/admin/HomePage'
 import LandingPage from './components/admin/LandingPage'
+import AdminLogin from './components/adminlogin/AdminLogin'
 
 function App() {
   return (
     <>
       <Router>
         <Routes>
+          <Route path='/login' element={<AdminLogin />} />
           <Route path='/' element={<AdminComponent />}>
             <Route index element={<HomePage />} />
             <Route path='/homepage' element={<HomePage />} />
