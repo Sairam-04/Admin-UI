@@ -53,7 +53,7 @@ const UploadChaptersSyllabus = () => {
       selectedMoi !== "none" &&
       selectedClass !== "none"
     ) {
-      const apiUrl = `http://localhost:8080/subjects_configuration?curriculum=${selectedSyllabus.toLowerCase()}&medium_of_instruction=${selectedMoi.toLowerCase()}&schooling=${selectedClass.toLowerCase()}`;
+      const apiUrl = `http://localhost:8080/subjects_configuration?curriculum=${selectedSyllabus.toLowerCase()}&medium_of_instruction=${selectedMoi.toLowerCase()}&schooling=${selectedClass}`;
 
       fetch(apiUrl, {
         method: "GET",
@@ -64,7 +64,7 @@ const UploadChaptersSyllabus = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          const constructedPropertyName = `${selectedSyllabus.toLowerCase()}_${selectedMoi.toLowerCase()}_${selectedClass.toLowerCase()}`;
+          const constructedPropertyName = `${selectedSyllabus.toLowerCase()}_${selectedMoi.toLowerCase()}_${selectedClass}`;
           const subjectsFromData = data[constructedPropertyName];
           setSubjects(subjectsFromData);
         })
@@ -82,7 +82,7 @@ const UploadChaptersSyllabus = () => {
     ) {
       try {
         setIsLoading(true)
-        const apiUrl = `http://localhost:8080/chapters_configuration?curriculum=${selectedSyllabus.toLowerCase()}&medium_of_instruction=${selectedMoi.toLowerCase()}&schooling=${selectedClass.toLowerCase()}&subject=${selectedSubject.toLowerCase()}`;
+        const apiUrl = `http://localhost:8080/chapters_configuration?curriculum=${selectedSyllabus.toLowerCase()}&medium_of_instruction=${selectedMoi.toLowerCase()}&schooling=${selectedClass}&subject=${selectedSubject}`;
 
         const response = await fetch(apiUrl, {
           method: "GET",
@@ -94,7 +94,7 @@ const UploadChaptersSyllabus = () => {
 
         if (response.ok) {
           const data = await response.json();
-          const key = `${selectedSyllabus.toLowerCase()}_${selectedMoi.toLowerCase()}_${selectedClass.toLowerCase()}_${selectedSubject.toLowerCase()}`;
+          const key = `${selectedSyllabus.toLowerCase()}_${selectedMoi.toLowerCase()}_${selectedClass}_${selectedSubject}`;
           const chaptersFromData = data ? data[key] : {};
 
           setChapters({
@@ -174,8 +174,8 @@ const UploadChaptersSyllabus = () => {
             "arrayIndex": `${index}`,
             "curriculum": selectedSyllabus.toLowerCase(),
             "medium_of_instruction": selectedMoi.toLowerCase(),
-            "schooling": selectedClass.toLowerCase(),
-            "subject": selectedSubject.toLowerCase()
+            "schooling": selectedClass,
+            "subject": selectedSubject
           })
         }
       );
@@ -209,8 +209,8 @@ const UploadChaptersSyllabus = () => {
             "new_chapter": newchapter,
             "curriculum": selectedSyllabus.toLowerCase(),
             "medium_of_instruction": selectedMoi.toLowerCase(),
-            "schooling": selectedClass.toLowerCase(),
-            "subject": selectedSubject.toLowerCase()
+            "schooling": selectedClass,
+            "subject": selectedSubject
           })
         }
       );
@@ -242,8 +242,8 @@ const UploadChaptersSyllabus = () => {
             "delete_subject": option,
             "curriculum": selectedSyllabus.toLowerCase(),
             "medium_of_instruction": selectedMoi.toLowerCase(),
-            "schooling": selectedClass.toLowerCase(),
-            "subject": selectedSubject.toLowerCase()
+            "schooling": selectedClass,
+            "subject": selectedSubject
           })
         }
       );
@@ -348,8 +348,8 @@ const UploadChaptersSyllabus = () => {
                 <option value="none">Select</option>
                 {
                   (chapters && selectedSyllabus !== "none" && selectedMoi !== "none" && selectedClass !== "none" && selectedSubject !== "none" &&
-                    chapters[selectedSyllabus.toLowerCase() + '_' + selectedMoi.toLowerCase() + '_' + selectedClass.toLowerCase() + '_' + selectedSubject.toLowerCase()]) ?
-                    (chapters[selectedSyllabus.toLowerCase() + '_' + selectedMoi.toLowerCase() + '_' + selectedClass.toLowerCase() + '_' + selectedSubject.toLowerCase()].map((chapter, index) => (
+                    chapters[selectedSyllabus.toLowerCase() + '_' + selectedMoi.toLowerCase() + '_' + selectedClass + '_' + selectedSubject]) ?
+                    (chapters[selectedSyllabus.toLowerCase() + '_' + selectedMoi.toLowerCase() + '_' + selectedClass + '_' + selectedSubject].map((chapter, index) => (
                       <option key={index} value={chapter}>{chapter}</option>
                     ))) : (
                       <i className="fa fa-spinner fa-spin"></i>
@@ -385,14 +385,14 @@ const UploadChaptersSyllabus = () => {
         {
           (showList && chapters &&
             selectedSyllabus !== "none" && selectedMoi !== "none" && selectedClass !== "none" && selectedSubject !== "none" &&
-            chapters[selectedSyllabus.toLowerCase() + '_' + selectedMoi.toLowerCase() + '_' + selectedClass.toLowerCase() + '_' + selectedSubject.toLowerCase()]
+            chapters[selectedSyllabus.toLowerCase() + '_' + selectedMoi.toLowerCase() + '_' + selectedClass + '_' + selectedSubject]
           ) && (
             <div className="admin__right__content__uploadsyllabus__container">
               {isLoading ? (
                 <i className="fa fa-spinner fa-spin"></i>
               ) : (
                 <ul>
-                  {chapters[selectedSyllabus.toLowerCase() + '_' + selectedMoi.toLowerCase() + '_' + selectedClass.toLowerCase() + '_' + selectedSubject.toLowerCase()].map((item, index) => (
+                  {chapters[selectedSyllabus.toLowerCase() + '_' + selectedMoi.toLowerCase() + '_' + selectedClass + '_' + selectedSubject].map((item, index) => (
                     <li key={index}>
                       <div>
                         {editingIndex === index ? (

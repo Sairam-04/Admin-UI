@@ -56,7 +56,7 @@ const UploadTopicSyllabus = () => {
             selectedMoi !== "none" &&
             selectedClass !== "none"
         ) {
-            const apiUrl = `http://localhost:8080/subjects_configuration?curriculum=${selectedSyllabus.toLowerCase()}&medium_of_instruction=${selectedMoi.toLowerCase()}&schooling=${selectedClass.toLowerCase()}`;
+            const apiUrl = `http://localhost:8080/subjects_configuration?curriculum=${selectedSyllabus.toLowerCase()}&medium_of_instruction=${selectedMoi.toLowerCase()}&schooling=${selectedClass}`;
 
             fetch(apiUrl, {
                 method: "GET",
@@ -67,7 +67,7 @@ const UploadTopicSyllabus = () => {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    const constructedPropertyName = `${selectedSyllabus.toLowerCase()}_${selectedMoi.toLowerCase()}_${selectedClass.toLowerCase()}`;
+                    const constructedPropertyName = `${selectedSyllabus.toLowerCase()}_${selectedMoi.toLowerCase()}_${selectedClass}`;
                     const subjectsFromData = data[constructedPropertyName];
                     setSubjects(subjectsFromData);
                 })
@@ -84,7 +84,7 @@ const UploadTopicSyllabus = () => {
             selectedClass !== "none" &&
             selectedSubject !== "none"
         ) {
-            const apiUrl = `http://localhost:8080/chapters_configuration?curriculum=${selectedSyllabus.toLowerCase()}&medium_of_instruction=${selectedMoi.toLowerCase()}&schooling=${selectedClass.toLowerCase()}&subject=${selectedSubject.toLowerCase()}`;
+            const apiUrl = `http://localhost:8080/chapters_configuration?curriculum=${selectedSyllabus.toLowerCase()}&medium_of_instruction=${selectedMoi.toLowerCase()}&schooling=${selectedClass}&subject=${selectedSubject}`;
 
             fetch(apiUrl, {
                 method: "GET",
@@ -95,7 +95,7 @@ const UploadTopicSyllabus = () => {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    const key = `${selectedSyllabus.toLowerCase()}_${selectedMoi.toLowerCase()}_${selectedClass.toLowerCase()}_${selectedSubject.toLowerCase()}`;
+                    const key = `${selectedSyllabus.toLowerCase()}_${selectedMoi.toLowerCase()}_${selectedClass}_${selectedSubject}`;
                     const chaptersFromData = data ? data[key] : {};
 
                     setChapters(chaptersFromData);
@@ -115,7 +115,7 @@ const UploadTopicSyllabus = () => {
             selectedChapter !== "none"
         ) {
             try {
-                const apiUrl = `http://localhost:8080/topics_configuration?curriculum=${selectedSyllabus.toLowerCase()}&medium_of_instruction=${selectedMoi.toLowerCase()}&schooling=${selectedClass.toLowerCase()}&subject=${selectedSubject.toLowerCase()}&chapter=${selectedChapter.toLowerCase()}`;
+                const apiUrl = `http://localhost:8080/topics_configuration?curriculum=${selectedSyllabus.toLowerCase()}&medium_of_instruction=${selectedMoi.toLowerCase()}&schooling=${selectedClass}&subject=${selectedSubject}&chapter=${selectedChapter}`;
 
                 const response = await fetch(apiUrl, {
                     method: "GET",
@@ -127,7 +127,7 @@ const UploadTopicSyllabus = () => {
 
                 if (response.ok) {
                     const data = await response.json();
-                    const key = `${selectedSyllabus.toLowerCase()}_${selectedMoi.toLowerCase()}_${selectedClass.toLowerCase()}_${selectedSubject.toLowerCase()}_${selectedChapter.toLowerCase()}`;
+                    const key = `${selectedSyllabus.toLowerCase()}_${selectedMoi.toLowerCase()}_${selectedClass}_${selectedSubject}_${selectedChapter}`;
                     const TopicsFromData = data ? data[key] : {};
                     const newTopicsState = {
                         "_id": data ? data._id : "",
@@ -191,7 +191,6 @@ const UploadTopicSyllabus = () => {
     const handleChapterChange = (event) => {
         const newSelectedChapter = event.target.value;
         setSelectedChapter(newSelectedChapter);
-        // fetchTopics();
     }
 
     const startEditing = (index, option) => {
@@ -224,9 +223,9 @@ const UploadTopicSyllabus = () => {
                         "arrayIndex": `${index}`,
                         "curriculum": selectedSyllabus.toLowerCase(),
                         "medium_of_instruction": selectedMoi.toLowerCase(),
-                        "schooling": selectedClass.toLowerCase(),
-                        "subject": selectedSubject.toLowerCase(),
-                        "chapter": selectedChapter.toLowerCase()
+                        "schooling": selectedClass,
+                        "subject": selectedSubject,
+                        "chapter": selectedChapter
                     })
                 }
             );
@@ -261,9 +260,9 @@ const UploadTopicSyllabus = () => {
                         "new_topic": newtopic,
                         "curriculum": selectedSyllabus.toLowerCase(),
                         "medium_of_instruction": selectedMoi.toLowerCase(),
-                        "schooling": selectedClass.toLowerCase(),
-                        "subject": selectedSubject.toLowerCase(),
-                        "chapter": selectedChapter.toLowerCase()
+                        "schooling": selectedClass,
+                        "subject": selectedSubject,
+                        "chapter": selectedChapter
                     })
                 }
             );
@@ -295,9 +294,9 @@ const UploadTopicSyllabus = () => {
                         "delete_topic": option,
                         "curriculum": selectedSyllabus.toLowerCase(),
                         "medium_of_instruction": selectedMoi.toLowerCase(),
-                        "schooling": selectedClass.toLowerCase(),
-                        "subject": selectedSubject.toLowerCase(),
-                        "chapter": selectedChapter.toLowerCase()
+                        "schooling": selectedClass,
+                        "subject": selectedSubject,
+                        "chapter": selectedChapter
                     })
                 }
             );
@@ -459,12 +458,12 @@ const UploadTopicSyllabus = () => {
                 {
                     (showList && topics &&
                         selectedSyllabus !== "none" && selectedMoi !== "none" && selectedClass !== "none" && selectedSubject !== "none" && selectedChapter !== "none" &&
-                        topics[selectedSyllabus.toLowerCase() + '_' + selectedMoi.toLowerCase() + '_' + selectedClass.toLowerCase() + '_' + selectedSubject.toLowerCase() + '_' + selectedChapter.toLowerCase()]
+                        topics[selectedSyllabus.toLowerCase() + '_' + selectedMoi.toLowerCase() + '_' + selectedClass + '_' + selectedSubject + '_' + selectedChapter]
                     ) && (
                         <div className="admin__right__content__uploadsyllabus__container">
                             <ul>
                                 {
-                                    topics[selectedSyllabus.toLowerCase() + '_' + selectedMoi.toLowerCase() + '_' + selectedClass.toLowerCase() + '_' + selectedSubject.toLowerCase() + '_' + selectedChapter.toLowerCase()].map((item, index) => (
+                                    topics[selectedSyllabus.toLowerCase() + '_' + selectedMoi.toLowerCase() + '_' + selectedClass + '_' + selectedSubject + '_' + selectedChapter].map((item, index) => (
                                         <li
                                             key={index}
                                         >

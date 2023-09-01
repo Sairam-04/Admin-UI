@@ -1,4 +1,4 @@
 import { getAdmin } from "./utils/localstorage"
 const {token, role} = getAdmin()
-const Authorization = token
+const Authorization = token ? token : ""
 export default Authorization
